@@ -4,10 +4,10 @@ class Page < ActiveRecord::Base
   validates :title, :presence => true
   validates :content, :presence => true
 
-  def published?
-    return false if published_on.nil?
-
-    published_on <= DateTime.now
-  end
+  scope :published, lambda {
+    where("published_on IS NOT NULL").
+    where("published_on <= ?", DateTime.now).
+    order("published_on DESC")
+  }
 end
 
