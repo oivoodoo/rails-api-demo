@@ -173,3 +173,36 @@ describe Api::PagesController do
   end
 end
 
+describe Api::PagesController do
+  let(:format_type) { :json }
+
+  context "publish page" do
+    let!(:page) { create(:page) }
+
+    before do
+      Timecop.freeze DateTime.now
+
+      post :publish, :id => page.id, :format => format_type
+    end
+
+    after { Timecop.return }
+
+    it "should set current time for published on of the page" do
+      Page.last.published_on.should == DateTime.now
+    end
+
+    it { response.body.should == page.reload.to_json }
+
+    context "as xml response" do
+      let(:format_type) { :xml }
+
+      it { response.body.should == page.reload.to_xml }
+    end
+  end
+
+  context "try to publish page with invalid id" do
+    before { post :publish, :id => "invalid id", :format => format_type }
+
+    it { should respond_with(404) }
+  end
+end

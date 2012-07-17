@@ -1,7 +1,7 @@
 class Api::PagesController < ApplicationController
   include ActionController::MimeResponds
 
-  before_filter :find_page, :only => [:show, :update, :destroy]
+  before_filter :find_page, :only => [:show, :update, :destroy, :publish]
 
   def index
     @pages = Page.all
@@ -69,6 +69,15 @@ class Api::PagesController < ApplicationController
     respond_to do |format|
       format.json { render :json => @pages }
       format.xml { render :xml => @pages }
+    end
+  end
+
+  def publish
+    @page.update_attribute(:published_on, DateTime.now)
+
+    respond_to do |format|
+      format.json { render :json => @page }
+      format.xml { render :xml => @page }
     end
   end
 
