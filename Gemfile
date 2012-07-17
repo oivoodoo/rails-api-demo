@@ -18,5 +18,6 @@ group :test do
   gem 'factory_girl_rails'
   gem 'ruby_gntp'
   gem 'guard-rspec'
+  gem 'timecop'
 end
 
