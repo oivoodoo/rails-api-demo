@@ -9,5 +9,10 @@ class Page < ActiveRecord::Base
     where("published_on <= ?", DateTime.now).
     order("published_on DESC")
   }
+
+  scope :unpublished, lambda {
+    where("published_on IS NULL or published_on > ?", DateTime.now).
+    order("published_on DESC")
+  }
 end
 

@@ -63,6 +63,15 @@ class Api::PagesController < ApplicationController
     end
   end
 
+  def unpublished
+    @pages = Page.unpublished
+
+    respond_to do |format|
+      format.json { render :json => @pages }
+      format.xml { render :xml => @pages }
+    end
+  end
+
   private
 
   def find_page

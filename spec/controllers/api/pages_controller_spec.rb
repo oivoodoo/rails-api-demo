@@ -150,3 +150,26 @@ describe Api::PagesController do
   end
 end
 
+describe Api::PagesController do
+  let(:format_type) { :json }
+
+  context "provide only unpublished pages sorting by published on desc" do
+    let!(:page) { create(:page) }
+
+    before do
+      Page.should_receive(:unpublished).and_return([page])
+
+      get :unpublished, :format => format_type
+    end
+
+    it { should respond_with(:success) }
+    it { response.body.should == [page].to_json }
+
+    context "as xml response" do
+      let(:format_type) { :xml }
+
+      it { response.body.should == [page].to_xml }
+    end
+  end
+end
+
