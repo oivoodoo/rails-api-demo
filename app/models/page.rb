@@ -14,5 +14,15 @@ class Page < ActiveRecord::Base
     where("published_on IS NULL or published_on > ?", DateTime.now).
     order("published_on DESC")
   }
+
+  def total_words
+    words(title) + words(content)
+  end
+
+  private
+
+  def words(text)
+    text.scan(/\w+/).count
+  end
 end
 

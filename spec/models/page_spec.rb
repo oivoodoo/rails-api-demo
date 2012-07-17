@@ -36,3 +36,12 @@ describe Page do
   end
 end
 
+describe Page do
+  describe "total words in title and content" do
+    let(:article) { build(:page, :title => 'one', :content => 'two') }
+    let(:about) { build(:page, :title => "one, two three.", :content => "one two!") }
+
+    it { article.total_words.should == 2 }
+    it { about.total_words.should == 5 }
+  end
+end

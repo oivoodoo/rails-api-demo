@@ -206,3 +206,28 @@ describe Api::PagesController do
     it { should respond_with(404) }
   end
 end
+
+describe Api::PagesController do
+  let(:format_type) { :json }
+  let!(:page) { create(:page) }
+  let(:number_of_words) { "3" }
+
+  before do
+    Page.should_receive(:find).and_return page
+
+    page.should_receive(:total_words).and_return number_of_words
+  end
+
+  context "on getting total words in title and content" do
+    before { get :total_words, :id => page.id, :format => format_type }
+
+    it { response.body.should == number_of_words }
+
+    context "as xml response" do
+      let(:format_type) { :xml }
+
+      it { response.body.should == number_of_words }
+    end
+  end
+end
+

@@ -1,7 +1,7 @@
 class Api::PagesController < ApplicationController
   include ActionController::MimeResponds
 
-  before_filter :find_page, :only => [:show, :update, :destroy, :publish]
+  before_filter :find_page, :only => [:show, :update, :destroy, :publish, :total_words]
 
   def index
     @pages = Page.all
@@ -78,6 +78,13 @@ class Api::PagesController < ApplicationController
     respond_to do |format|
       format.json { render :json => @page }
       format.xml { render :xml => @page }
+    end
+  end
+
+  def total_words
+    respond_to do |format|
+      format.json { render :json => @page.total_words }
+      format.xml { render :xml => @page.total_words }
     end
   end
 
