@@ -45,3 +45,22 @@ describe Page do
     it { about.total_words.should == 5 }
   end
 end
+
+describe Page do
+  let!(:page) { create(:page) }
+
+  before { Timecop.freeze DateTime.now }
+
+  after { Timecop.return }
+
+  it { page.published_on.should_not be }
+
+  describe "publish page" do
+    before { page.publish! }
+
+    it "should set current time to the published on" do
+      page.reload.published_on.should == DateTime.now
+    end
+  end
+end
+

@@ -180,16 +180,13 @@ describe Api::PagesController do
     let!(:page) { create(:page) }
 
     before do
-      Timecop.freeze DateTime.now
+      Page.stub!(:find).and_return(page)
+      page.should_receive(:publish!)
 
       post :publish, :id => page.id, :format => format_type
     end
 
     after { Timecop.return }
-
-    it "should set current time for published on of the page" do
-      Page.last.published_on.should == DateTime.now
-    end
 
     it { response.body.should == page.reload.to_json }
 

@@ -73,7 +73,7 @@ class Api::PagesController < ApplicationController
   end
 
   def publish
-    @page.update_attribute(:published_on, DateTime.now)
+    @page.publish!
 
     respond_to do |format|
       format.json { render :json => @page }

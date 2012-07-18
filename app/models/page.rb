@@ -19,6 +19,10 @@ class Page < ActiveRecord::Base
     words(title) + words(content)
   end
 
+  def publish!
+    update_attribute(:published_on, DateTime.now)
+  end
+
   private
 
   def words(text)
